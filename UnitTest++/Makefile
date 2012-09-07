@@ -89,8 +89,9 @@ install: $(lib)
 	mkdir -p $(INSTALL_PREFIX)/include/UnitTest++/Posix
 	install -m 644 src/*.h $(INSTALL_PREFIX)/include/UnitTest++
 	install -m 644 src/Posix/*.h $(INSTALL_PREFIX)/include/UnitTest++/Posix
-	mkdir -p $(INSTALL_PREFIX)/lib
-	install -m 644 libUnitTest++.a $(INSTALL_PREFIX)/lib
+	mkdir -p $(INSTALL_PREFIX)/lib/pkgconfig
+	install -m 644 libUnitTest++.a $(INSTALL_PREFIX)/lib/
+	cat UnitTest++.pc.template | python replace.py prefix $(INSTALL_PREFIX) > $(INSTALL_PREFIX)/lib/pkgconfig/UnitTest++.pc
 
 uninstall:
 	rm -rf $(INSTALL_PREFIX)/include/UnitTest++

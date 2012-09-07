@@ -1,0 +1,10 @@
+prefix=%(prefix)s
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: UnitTest++
+Description: Unit Testing Library for C++
+Version: 1.3
+Libs: -L${libdir} -lUnitTest++
+Cflags: -I${includedir}
