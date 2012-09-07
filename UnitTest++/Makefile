@@ -4,6 +4,7 @@ LDFLAGS ?=
 SED = sed
 MV = mv
 RM = rm
+INSTALL_PREFIX=/usr/local
 
 .SUFFIXES: .o .cpp
 
@@ -74,7 +75,7 @@ all: $(test)
 $(lib): $(objects) 
 	@echo Creating $(lib) library...
 	@ar cr $(lib) $(objects)
-    
+
 $(test): $(lib) $(test_objects)
 	@echo Linking $(test)...
 	@$(CXX) $(LDFLAGS) -o $(test) $(test_objects) $(lib)
@@ -82,7 +83,18 @@ $(test): $(lib) $(test_objects)
 	@./$(test)
 
 clean:
-	-@$(RM) $(objects) $(test_objects) $(dependencies) $(test_dependencies) $(test) $(lib) 2> /dev/null
+	-@$(RM) -rf $(objects) $(test_objects) $(dependencies) $(test_dependencies) $(test) $(lib) 2> /dev/null
+
+install: $(lib)
+	mkdir -p $(INSTALL_PREFIX)/include/UnitTest++/Posix
+	install -m 644 src/*.h $(INSTALL_PREFIX)/include/UnitTest++
+	install -m 644 src/Posix/*.h $(INSTALL_PREFIX)/include/UnitTest++/Posix
+	mkdir -p $(INSTALL_PREFIX)/lib
+	install -m 644 libUnitTest++.a $(INSTALL_PREFIX)/lib
+
+uninstall:
+	rm -rf $(INSTALL_PREFIX)/include/UnitTest++
+	rm -rf $(INSTALL_PREFIX)/lib/libUnitTest++.a
 
 %.o : %.cpp
 	@echo $<
