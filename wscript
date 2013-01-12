@@ -55,3 +55,15 @@ def build(bld):
                  source = ['src/tests/'+x for x in source],
                  inst_to = None,
                  use = 'UnitTest++' )
+
+    # install header files
+    headers = bld.path.ant_glob('src/*.h')
+    headers.extend(bld.path.ant_glob('src/Posix/*.h'))
+    bld.install_files('${PREFIX}/include/UnitTest++', headers)
+
+    # substitutions for the pkg-config file
+    bld( features = 'subst',
+         source = 'UnitTest++.pc.template',
+         target = 'UnitTest++.pc',
+         PREFIX = bld.env.PREFIX,
+         install_path = '${PREFIX]/lib/pkgconfig' )
