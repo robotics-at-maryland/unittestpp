@@ -57,9 +57,10 @@ def build(bld):
                  use = 'UnitTest++' )
 
     # install header files
-    headers = bld.path.ant_glob('src/*.h')
-    headers.extend(bld.path.ant_glob('src/Posix/*.h'))
-    bld.install_files('${PREFIX}/include/UnitTest++', headers)
+    bld.install_files('${PREFIX}/include/UnitTest++',
+                      bld.path.ant_glob('src/*.h'))
+    bld.install_files('${PREFIX}/include/UnitTest++/Posix',
+                      bld.path.ant_glob('src/Posix/*.h'))
 
     # substitutions for the pkg-config file
     bld( features = 'subst',
